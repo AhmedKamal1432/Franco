@@ -1,0 +1,12 @@
+the rest of logical operands
+handle assign constats
+handle bool
+hndle float
+if(value)
+operator prescendance 
+
+error handling
+remove the top of stack after every compare
+
+statment just assign or special no expr
+

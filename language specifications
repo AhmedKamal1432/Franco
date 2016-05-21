@@ -1,0 +1,15 @@
+variables name one char
+int , float 4byte
+char 1 byte
+no assign at declaration
+we don't have boolens
+
+jz jump if the zero flag raised 
+
+compare if the condition FALSE the zero flag RAISED
+and push the values of 0 in the top of stack if FALSE
+	at True zero flag not raised and 1 pushed in he top of stack
+
+no concating assignments k = p = i 
+
+  
