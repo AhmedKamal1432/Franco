@@ -53,6 +53,11 @@ void yyerror(char *);
 		return FVALUE;
 	}
 
+"'"."'" 		{ // char like 'c'
+		yylval.iValue = (int) yytext[1];
+		return CVALUE;
+}
+
 ">="		return GE; 
 "<="		return LE; 
 "=="		return EQ; 

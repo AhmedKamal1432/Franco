@@ -38,6 +38,7 @@ int sym[26];                    /* symbol table */
 %token <iValue> VALUE 
 %token <fValue> FVALUE
 %token <bValue> BVALUE
+%token <iValue> CVALUE
 %token <sIndex> VARIABLE 
 
 %right '='
@@ -70,12 +71,11 @@ code:
 
 stmt: 
                 ';'                     { $$ = opr(';',IntType, 2, NULL, NULL); } 
-              
-              | assign_stmt ';'         {$$ = $1;}
-              | def_stmt ';'         {$$ = $1;}
-              | scop_stmt         {$$ = $1;}
+              | assign_stmt ';'         {$$ = $1; printf("\n"); }
+              | def_stmt ';'         {$$ = $1; printf("\n");}
+              | scop_stmt         {$$ = $1; printf("\n");}
 
-              | PRINT expr ';'          { $$ = opr(PRINT, IntType,  1, $2); } 
+              | PRINT expr ';'          { $$ = opr(PRINT, IntType,  1, $2); printf("\n");} 
                 ; 
 
 assign_stmt:
@@ -113,6 +113,7 @@ expr:
                 VALUE               { $$ = con($1, IntType); }
               | FVALUE              {$$ = con($1, FloatType);}
               | BVALUE              {$$ = con($1, BoolType);}
+              | CVALUE              {$$ = con($1, CharType);}
               | VARIABLE              {
                         /* searh for the type of the variable  */
                          $$ = id($1);

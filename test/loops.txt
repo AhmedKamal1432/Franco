@@ -1,0 +1,44 @@
+rkm x;
+rkmy;
+x = 7;
+
+tool lma(x){
+	y = y+x;
+	x = x - 1;
+}
+
+tool lma(y < 18){
+	x = y + x;
+	y = y - 1;
+}
+
+
+tool lma(y < 20){
+	tool lma(x){
+		y = y+x;
+		x = x - 1;
+	}
+
+	x = y + x;
+	y = y - 1;
+}
+
+rkm k;
+k = 7;
+
+leff(k = 0; k < 8; k = k+1){
+	x = y*k;	
+}
+
+leff(k = 15; k > 0; k = k--){
+	x = y*k;	
+}
+
+leff(k = 0; k ; k = k+1){
+	rkm i = 0;
+	tool lma(i < 5){
+		i = i+1;
+		y = y+1;
+	}
+	x = y*k;
+}

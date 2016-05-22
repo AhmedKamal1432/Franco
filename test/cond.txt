@@ -1,0 +1,48 @@
+/////////////////////////
+//   definations
+//////////////////////////////
+
+rkm r;
+rkm R;
+
+kasr k;
+kasr K;
+
+bool b;
+bool B;
+
+7arf c;
+
+// just if conditions
+r = 7;
+lw(r == 7)
+	k = 5.6;
+
+lw(B){
+	b = True;
+}
+
+lw(c !=  'g')
+	b = False;
+
+lw(r < 8 && r + 3 || R ){
+	k = 5.6;
+	R = R - 1;
+}
+
+
+// if else
+lw( k < 2.0)
+	r = 8;
+aw
+	b = False;
+
+
+lw(B){
+	b = True;
+}
+aw{
+	k = 12 * 9.0;
+	B = False;
+}
+

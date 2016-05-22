@@ -193,7 +193,7 @@ int ex(nodeType *p) {
                         break;
 
                     case OR_OR: 
-                        printf("\tand\n"); 
+                        printf("\tor\n"); 
                         p->dt = BoolType;
                         break;
 
@@ -201,8 +201,14 @@ int ex(nodeType *p) {
                         printf("\tand\n"); 
                         break;
 
+                    case OR: 
+                        printf("\tor\n"); 
+                        break;
+
                     case XOR: 
-                        printf("\tXOR\n"); 
+                        printf("\txor\n"); 
+                        break;
+                    default :
                         break;
 
                     }
@@ -248,6 +254,9 @@ int ex(nodeType *p) {
                         break;
 
                     case AND: 
+                        break;
+
+                    case OR: 
                         break;
 
                     case XOR: 

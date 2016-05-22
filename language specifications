@@ -7,7 +7,8 @@ we don't have boolens
 jz jump if the zero flag raised 
 
 compare between two values in the stack  if the condition FALSE the zero flag RAISED
-and pop them form the stack
+
+push the result (1 or 0) on the top of the stacks
 
 and pop the two values in the stack
 
@@ -16,4 +17,7 @@ logical operator take from stack and push result to it
 push pop not change in the flags
 
 no concating assignments k = p = i 
+
+there is no empty scope or between kerly praces{}
+threre is no operator concatinig with number (-*+/)value like -1 *5 you hae to keep sace between them
 

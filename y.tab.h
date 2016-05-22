@@ -71,20 +71,21 @@ extern int yydebug;
     VALUE = 281,
     FVALUE = 282,
     BVALUE = 283,
-    VARIABLE = 284,
-    OR_OR = 285,
-    AND_AND = 286,
-    OR = 287,
-    XOR = 288,
-    AND = 289,
-    EQ = 290,
-    NE = 291,
-    GE = 292,
-    LE = 293,
-    NOT = 294,
-    L_NOT = 295,
-    IFX = 296,
-    UMINUS = 297
+    CVALUE = 284,
+    VARIABLE = 285,
+    OR_OR = 286,
+    AND_AND = 287,
+    OR = 288,
+    XOR = 289,
+    AND = 290,
+    EQ = 291,
+    NE = 292,
+    GE = 293,
+    LE = 294,
+    NOT = 295,
+    L_NOT = 296,
+    IFX = 297,
+    UMINUS = 298
   };
 #endif
 /* Tokens.  */
@@ -114,20 +115,21 @@ extern int yydebug;
 #define VALUE 281
 #define FVALUE 282
 #define BVALUE 283
-#define VARIABLE 284
-#define OR_OR 285
-#define AND_AND 286
-#define OR 287
-#define XOR 288
-#define AND 289
-#define EQ 290
-#define NE 291
-#define GE 292
-#define LE 293
-#define NOT 294
-#define L_NOT 295
-#define IFX 296
-#define UMINUS 297
+#define CVALUE 284
+#define VARIABLE 285
+#define OR_OR 286
+#define AND_AND 287
+#define OR 288
+#define XOR 289
+#define AND 290
+#define EQ 291
+#define NE 292
+#define GE 293
+#define LE 294
+#define NOT 295
+#define L_NOT 296
+#define IFX 297
+#define UMINUS 298
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -142,7 +144,7 @@ union YYSTYPE
     char sIndex;                /* symbol table index */
     nodeType *nPtr;             /* node pointer */ 
 
-#line 146 "y.tab.h" /* yacc.c:1909  */
+#line 148 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

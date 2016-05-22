@@ -1,6 +1,3 @@
-/////////////////////////
-//   definations
-//////////////////////////////
 
 rkm r;
 rkm R;
@@ -12,7 +9,6 @@ kasr K;
 bool b;
 bool B;
 
-// test integer
 r = 1+2;
 R = r*3;
 r = 4/2;
@@ -21,18 +17,15 @@ R=  r | 8;
 R = ~r;
 R = ~4;
 
-// test float
 k = 5.2;
 K = k * 4.0;
 K = k * 4;
 
 
-//test char
 c = 't';
 c = 't' + 2;
 c = c - 5;
 
-//test bool
 b = 8 &1;
 B = b |  1;
 b = b ^ 8;
@@ -47,9 +40,6 @@ b = 8 &&1;
 B = b ||  1;
 b = b ^ 8;
 
-/////////////////////////
-//   definations
-//////////////////////////////
 
 rkm r;
 rkm R;
@@ -62,7 +52,6 @@ bool B;
 
 7arf c;
 
-// just if conditions
 r = 7;
 lw(r == 7)
 	k = 5.6;
@@ -80,7 +69,6 @@ lw(r < 8 && r + 3 || R ){
 }
 
 
-// if else
 lw( k < 2.0)
 	r = 8;
 aw

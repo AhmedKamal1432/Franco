@@ -10,5 +10,5 @@ sabt bool B = True;
 
 r = 7;
 k = 5.6;
-c = 't'
-b = True
+c = 't';
+b = True;
