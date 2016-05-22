@@ -1,12 +1,12 @@
-the rest of logical operands
 handle assign constats
-handle bool
-hndle float
-if(value)
-operator prescendance 
 
-error handling
-remove the top of stack after every compare
+the rest of logical operands
 
 statment just assign or special no expr
+
+repeat-until loops, for loops, switch statement.
+
+
+Error handling
+at logial and compare operation check the dt of the child if float raise error and at the end compare change the dt of the operation to boolType
 

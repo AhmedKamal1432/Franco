@@ -6,10 +6,14 @@ we don't have boolens
 
 jz jump if the zero flag raised 
 
-compare if the condition FALSE the zero flag RAISED
-and push the values of 0 in the top of stack if FALSE
-	at True zero flag not raised and 1 pushed in he top of stack
+compare between two values in the stack  if the condition FALSE the zero flag RAISED
+and pop them form the stack
+
+and pop the two values in the stack
+
+logical operator take from stack and push result to it
+
+push pop not change in the flags
 
 no concating assignments k = p = i 
 
-  

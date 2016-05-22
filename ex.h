@@ -5,6 +5,7 @@ static int lbl;
 #define TMP "tmp"
 
 void cmp_one_top_stack();
+void cmp_zero_top_stack();
 
 int ex(nodeType *p) { 
     int lbl1, lbl2; 
@@ -30,8 +31,9 @@ int ex(nodeType *p) {
             printf("L%03d:\n", lbl1 = lbl++); 
             ex(p->opr.op[0]); 
 
-            /* compare againe "top of stack != 0" */
-            cmp_one_top_stack();
+            /* compare  "top of stack != 0"  if it's value is integer*/
+            if(p->opr.op[0]->dt != BoolType)
+                cmp_one_top_stack(p->opr.op[0]);
 
             printf("\tjz\tL%03d\n", lbl2 = lbl++); 
             ex(p->opr.op[1]); 
@@ -42,8 +44,10 @@ int ex(nodeType *p) {
         case IF: 
             ex(p->opr.op[0]);
 
-            /* compare againe "top of stack != 0" */
-            cmp_one_top_stack();
+            /* compare  "top of stack != 0"  if it's value is integer*/
+            if(p->opr.op[0]->dt != BoolType)
+                cmp_one_top_stack(p->opr.op[0]);
+
             if (p->opr.nops > 2) { 
                 /* if else */ 
                 printf("\tjz\tL%03d\n", lbl1 = lbl++); 
@@ -115,6 +119,31 @@ int ex(nodeType *p) {
             /* TODO: these variables should raise error att assign them (constants) */
             break;
 
+        case NOT:
+            /* just push the value of the operand in  the stack */
+            ex(p->opr.op[0]);
+                switch(p->dt){
+                    case FloatType:
+                        /* raise error */
+                        break;
+                    default:
+                        break; 
+                }
+                break;
+
+        case L_NOT:
+            /* just push the value of the operand in  the stack */
+            ex(p->opr.op[0]);
+                switch(p->dt){
+                    case FloatType:
+                        /* raise error */
+                        break;
+                    default:
+                        printf("\tNot\n"); break;                         
+                        break; 
+                }
+                break;
+
         default: 
             ex(p->opr.op[0]); 
             ex(p->opr.op[1]);
@@ -125,12 +154,51 @@ int ex(nodeType *p) {
                     case '-':   printf("\tsub\n"); break;  
                     case '*':   printf("\tmul\n"); break; 
                     case '/':   printf("\tdiv\n"); break; 
-                    case '<':   printf("\tcompLT\n"); break; 
-                    case '>':   printf("\tcompGT\n"); break; 
-                    case GE:    printf("\tcompGE\n"); break; 
-                    case LE:    printf("\tcompLE\n"); break; 
-                    case NE:    printf("\tcompNE\n"); break; 
-                    case EQ:    printf("\tcompEQ\n"); break; 
+
+                    case '<':
+                       printf("\tcompLT\n");
+                        p->dt = BoolType;
+                        break; 
+                    case '>':   
+                        printf("\tcompGT\n"); 
+                        p->dt = BoolType;
+                        break; 
+
+                    case GE:
+                        printf("\tcompGE\n"); 
+                        p->dt = BoolType;
+                        break; 
+                    case LE:
+                        printf("\tcompLE\n"); 
+                        p->dt = BoolType;
+                        break; 
+                    case NE:
+                        printf("\tcompNE\n"); 
+                        p->dt = BoolType;
+                        break; 
+                    case EQ: 
+                        printf("\tcompEQ\n"); 
+                        p->dt = BoolType;
+                        break;
+
+                    case AND_AND: 
+                        printf("\tand\n"); 
+                        p->dt = BoolType;
+                        break;
+
+                    case OR_OR: 
+                        printf("\tand\n"); 
+                        p->dt = BoolType;
+                        break;
+
+                    case AND: 
+                        printf("\tand\n"); 
+                        break;
+
+                    case XOR: 
+                        printf("\tXOR\n"); 
+                        break;
+
                     }
                     break;
 
@@ -140,12 +208,44 @@ int ex(nodeType *p) {
                     case '-':   printf("\tfsub\n"); break;  
                     case '*':   printf("\tfmul\n"); break; 
                     case '/':   printf("\tfdiv\n"); break; 
-                    case '<':   printf("\tfcompLT\n"); break; 
-                    case '>':   printf("\tfcompGT\n"); break; 
-                    case GE:    printf("\tfcompGE\n"); break; 
-                    case LE:    printf("\tfcompLE\n"); break; 
-                    case NE:    printf("\tfcompNE\n"); break; 
-                    case EQ:    printf("\tfcompEQ\n"); break; 
+                    case '<':
+                       printf("\tfcompLT\n");
+                        p->dt = BoolType;
+                        break; 
+                    case '>':   
+                        printf("\tfcompGT\n"); 
+                        p->dt = BoolType;
+                        break; 
+
+                    case GE:
+                        printf("\tfcompGE\n"); 
+                        p->dt = BoolType;
+                        break; 
+                    case LE:
+                        printf("\tfcompLE\n"); 
+                        p->dt = BoolType;
+                        break; 
+                    case NE:
+                        printf("\tfcompNE\n"); 
+                        p->dt = BoolType;
+                        break; 
+                    case EQ: 
+                        printf("\tfcompEQ\n"); 
+                        p->dt = BoolType;
+                        break; 
+
+                    /* TODO: Raise errors here*/
+                    case AND_AND: 
+                        break;
+
+                    case OR_OR: 
+                        break;
+
+                    case AND: 
+                        break;
+
+                    case XOR: 
+                        break;
                     } 
                     break;
                 default:   
@@ -160,5 +260,11 @@ int ex(nodeType *p) {
 void cmp_one_top_stack(){
         printf("\tpush\t0\n");
         printf("\tcompNE\n");
+        printf("\tpop\t%s\n",TMP);
+}
+
+void cmp_zero_top_stack(){
+        printf("\tpush\t0\n");
+        printf("\tcompE\n");
         printf("\tpop\t%s\n",TMP);
 }

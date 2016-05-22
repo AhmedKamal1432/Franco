@@ -82,8 +82,9 @@ extern int yydebug;
     GE = 292,
     LE = 293,
     NOT = 294,
-    IFX = 295,
-    UMINUS = 296
+    L_NOT = 295,
+    IFX = 296,
+    UMINUS = 297
   };
 #endif
 /* Tokens.  */
@@ -124,8 +125,9 @@ extern int yydebug;
 #define GE 292
 #define LE 293
 #define NOT 294
-#define IFX 295
-#define UMINUS 296
+#define L_NOT 295
+#define IFX 296
+#define UMINUS 297
 
 /* Value type.  */
 #if ! defined YYSTYPE && ! defined YYSTYPE_IS_DECLARED
@@ -140,7 +142,7 @@ union YYSTYPE
     char sIndex;                /* symbol table index */
     nodeType *nPtr;             /* node pointer */ 
 
-#line 144 "y.tab.h" /* yacc.c:1909  */
+#line 146 "y.tab.h" /* yacc.c:1909  */
 };
 # define YYSTYPE_IS_TRIVIAL 1
 # define YYSTYPE_IS_DECLARED 1

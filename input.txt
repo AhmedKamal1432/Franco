@@ -1,2 +1,6 @@
-bool x;
-x = True;
+tool lma(x + y){
+	kasr b;
+	y = ~x;
+	z = v^t;
+}
+

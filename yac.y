@@ -50,7 +50,7 @@ int sym[26];                    /* symbol table */
 %left  GE LE  '>' '<'
 %left '+' '-' 
 %left '*' '/' '%' 
-%left NOT
+%left NOT L_NOT
 
 %nonassoc IFX
 %nonassoc ELSE
@@ -69,11 +69,11 @@ code:
 
 
 stmt: 
-                ';'                     { $$ = opr(';', 2, IntType, NULL, NULL); } 
+                ';'                     { $$ = opr(';',IntType, 2, NULL, NULL); } 
               
               | assign_stmt ';'         {$$ = $1;}
               | def_stmt ';'         {$$ = $1;}
-              | scop_stmt ';'         {$$ = $1;}
+              | scop_stmt         {$$ = $1;}
 
               | PRINT expr ';'          { $$ = opr(PRINT, IntType,  1, $2); } 
                 ; 
@@ -126,6 +126,16 @@ expr:
               | expr LE expr          { $$ = opr(LE, dt_of_children($1, $3), 2, $1, $3); } 
               | expr NE expr          { $$ = opr(NE, dt_of_children($1, $3), 2, $1, $3); } 
               | expr EQ expr          { $$ = opr(EQ, dt_of_children($1, $3), 2, $1, $3); } 
+              
+              | expr AND_AND expr       {$$ = opr(AND_AND, dt_of_children($1, $3), 2, $1, $3); }
+              | expr OR_OR expr       {$$ = opr(OR_OR, dt_of_children($1, $3), 2, $1, $3); }
+              | NOT expr       {$$ = opr(NOT, dt_of_node($2), 2 , $2); }
+
+              | expr AND expr       {$$ = opr(AND, dt_of_children($1, $3), 2, $1, $3); }
+              | expr OR expr       {$$ = opr(OR, dt_of_children($1, $3), 2, $1, $3); }
+              | expr XOR expr       {$$ = opr(XOR, dt_of_children($1, $3), 2, $1, $3); }
+              | L_NOT expr       {$$ = opr(L_NOT, dt_of_node($2), 2, $2); }
+              
               | '(' expr ')'          { $$ = $2; } 
               ; 
 %% 

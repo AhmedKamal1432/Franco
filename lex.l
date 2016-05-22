@@ -56,8 +56,15 @@ void yyerror(char *);
 "<="		return LE; 
 "=="		return EQ; 
 "!="		return NE; 
-"&&"		return AND;
-"||"		return OR;
+
+"&&"		return AND_AND;
+"||"		return OR_OR;
+"!"		return NOT;
+
+"|"		return OR;
+"&"		return AND;
+"^"		return XOR;
+"~"		return L_NOT;
 
 "True"  {
 	yylval.bValue = 1;
@@ -69,8 +76,7 @@ void yyerror(char *);
 	return BVALUE;
 }
 
-
-[-()<>=+*/;{}.|&^!] { 
+[-()<>=+*/;{}] { 
                 return yytext[0]; 
              } 
 
