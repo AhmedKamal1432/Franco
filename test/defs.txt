@@ -5,9 +5,10 @@ bool b;
 
 sabt rkm R = 2;
 sabt kasr K = 2.2;
+sabt 7arf C = 'q';
 sabt bool B = True;
-
 
 r = 7;
 k = 5.6;
-b = True;
+c = 't'
+b = True

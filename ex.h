@@ -70,8 +70,11 @@ int ex(nodeType *p) {
             break; 
 
         case '=':        
-            ex(p->opr.op[1]); 
-            printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a'); 
+            ex(p->opr.op[1]);
+            if(p->dt == FloatType)
+                printf("\tfpop\t%c\n", p->opr.op[0]->id.i + 'a'); 
+            else
+                printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a'); 
             break; 
 
         /* Ignored Not implemented */
@@ -108,6 +111,9 @@ int ex(nodeType *p) {
                 case 3:
                     printf("\tDB\t%c\n",p->opr.op[1]->opr.op[0]->id.i + 'a'); 
                     break;
+                case 4:
+                    printf("\tDB\t%c\n",p->opr.op[1]->opr.op[0]->id.i + 'a'); 
+                    break;                
                 default:
                     /* raise error unhandled value for costat type*/
                     break;

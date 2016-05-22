@@ -1,12 +1,18 @@
-handle assign constats
 
-the rest of logical operands
+read char from user
 
-statment just assign or special no expr
+////////////////////////////////////////
+repeat-until loops,
+for loops,
+switch statement.
+///////////////////////////////////////////////////
 
-repeat-until loops, for loops, switch statement.
+Variables and scops
+	assign constant
 
-
+////////////////////////////////////////////////////
 Error handling
+Continue after first error
+
 at logial and compare operation check the dt of the child if float raise error and at the end compare change the dt of the operation to boolType
 

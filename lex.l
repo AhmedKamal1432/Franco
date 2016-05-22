@@ -34,7 +34,8 @@ void yyerror(char *);
 "o5rog"		return EXIT;
 
 
-[a-z]	{ /* VARIABLES are just one char*/
+[a-z] |
+[A-Z]	{ /* VARIABLES are just one char*/
 		yylval.sIndex = *yytext - 'a';
 		return VARIABLE;
 	}

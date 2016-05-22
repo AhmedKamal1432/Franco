@@ -91,7 +91,8 @@ def_stmt:
 
               | CONST NUMBER assign_stmt        {$$ = opr(CONST, IntType, 2,  id(1), $3); }
               | CONST FNUMBER assign_stmt        {$$ = opr(CONST, FloatType, 2, id(2), $3); }
-              | CONST CHAR assign_stmt        {$$ = opr(CONST, IntType, 2, id(3), $3); }
+              | CONST CHAR assign_stmt        {$$ = opr(CONST, CharType, 2, id(3), $3); }
+              | CONST BOOL assign_stmt        {$$ = opr(CONST, BoolType, 2, id(4), $3); }
             ;
 
 
