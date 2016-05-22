@@ -1,7 +1,0 @@
-
-rkm r;
-rkm R;
-rkm r;
-rkm R;
-
-b = k;

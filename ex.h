@@ -47,6 +47,38 @@ int ex(nodeType *p) {
             printf("L%03d:\n", lbl2); 
             break; 
 
+        case REPEAT: 
+            printf("L%03d:\n", lbl1 = lbl++); 
+            ex(p->opr.op[0]); 
+
+            ex(p->opr.op[1]); 
+            /* compare  "top of stack != 0"  if it's value is integer*/
+            if(p->opr.op[1]->dt != BoolType)
+                cmp_one_top_stack(p->opr.op[0]);
+
+            printf("\tjnz\tL%03d\n", lbl2 = lbl++); 
+            printf("\tjmp\tL%03d\n", lbl1); 
+            printf("L%03d:\n", lbl2); 
+            break; 
+
+        case FOR: 
+            ex(p->opr.op[0]); 
+            printf("L%03d:\n", lbl1 = lbl++); 
+
+            ex(p->opr.op[1]); 
+            /* compare  "top of stack != 0"  if it's value is integer*/
+            if(p->opr.op[1]->dt != BoolType)
+                cmp_one_top_stack(p->opr.op[0]);
+
+            printf("\tjz\tL%03d\n", lbl2 = lbl++); 
+
+            ex(p->opr.op[3]); 
+
+            ex(p->opr.op[2]); 
+            printf("\tjmp\tL%03d\n", lbl1); 
+            printf("L%03d:\n", lbl2); 
+            break; 
+
         case IF: 
             ex(p->opr.op[0]);
 

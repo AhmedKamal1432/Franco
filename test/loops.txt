@@ -23,6 +23,11 @@ tool lma(y < 20){
 	y = y - 1;
 }
 
+
+karar{
+	z = 0;	
+}l7d(c == 0);
+
 rkm k;
 k = 7;
 

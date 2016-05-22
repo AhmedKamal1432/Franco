@@ -1,13 +1,15 @@
 
-
 //3asr
 
 Variables and scops 7:30
 /////////////////////////
 test variables and scops 8:30
 
+modular arthmatic
+
+2erga3 llfranco
+
 ////////////////////////////////////////
-repeat-until loops, //9:30
 for loops, // 10:00
 switch statement.	11:00
 ///////////////////////////////////////////////////

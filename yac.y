@@ -97,6 +97,8 @@ def_stmt:
 
 scop_stmt:
             WHILE '(' expr ')' stmt { $$ = opr(WHILE, IntType, 2, $3, $5); } 
+              | REPEAT stmt UNTIL '(' expr ')' ';' { $$ = opr(REPEAT, IntType, 2, $2, $5); }
+              | FOR '(' assign_stmt ';' expr ';' assign_stmt ')'  stmt { $$ = opr(FOR, IntType, 4, $3, $5, $7, $9); } 
               | IF '(' expr ')' stmt %prec IFX { $$ = opr(IF, IntType, 2, $3, $5); } 
               | IF '(' expr ')' stmt ELSE stmt 
                                         { $$ = opr(IF, IntType, 3, $3, $5, $7); } 
