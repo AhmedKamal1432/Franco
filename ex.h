@@ -1,8 +1,10 @@
 #include <stdio.h> 
-#include "def.h" 
-#include "y.tab.h" 
+#include "sym_tb.h"
+#include "y.tab.h"
+
 static int lbl;
 #define TMP "tmp"
+Symbole *sym;
 
 void cmp_one_top_stack();
 void cmp_zero_top_stack();
@@ -20,7 +22,11 @@ int ex(nodeType *p) {
             printf("\tpush\t%d\n", p->con.value);
         break; 
 
-    case typeId:         
+    case typeId:
+        sym = get_sym(p);
+        if(sym == NULL){
+           /* Raise Compilation error */
+        }
         printf("\tpush\t%c\n", p->id.i + 'a');  
         break; 
 
@@ -69,7 +75,12 @@ int ex(nodeType *p) {
             printf("\tprint\n"); 
             break; 
 
-        case '=':        
+        case '=':
+            get_sym(p->opr.op[0]);
+            if(sym == NULL){
+               /* Raise Compilation error */
+            }
+
             ex(p->opr.op[1]);
             if(p->dt == FloatType)
                 printf("\tfpop\t%c\n", p->opr.op[0]->id.i + 'a'); 
@@ -84,18 +95,22 @@ int ex(nodeType *p) {
             break;
 
         case NUMBER:
+            insert_sym(p->opr.op[0], IntType);
             printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
         case FNUMBER:
+            insert_sym(p->opr.op[0], FloatType);
             printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
         case CHAR:
+            insert_sym(p->opr.op[0], CharType);
             printf("\tDB\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
         case BOOL:
+            insert_sym(p->opr.op[0], BoolType);
             printf("\tDB\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
@@ -283,3 +298,4 @@ void cmp_zero_top_stack(){
         printf("\tcompE\n");
         printf("\tpop\t%s\n",TMP);
 }
+

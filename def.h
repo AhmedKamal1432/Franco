@@ -32,4 +32,3 @@ typedef struct nodeTypeTag {
     }; 
 } nodeType; 
 
-extern int sym[26]; 

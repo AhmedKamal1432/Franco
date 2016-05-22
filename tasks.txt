@@ -2,17 +2,16 @@
 
 //3asr
 
-type of identifiers // 4:30
+Variables and scops 7:30
+/////////////////////////
+test variables and scops 8:30
 
 ////////////////////////////////////////
-repeat-until loops, //5:30
-for loops, // 6:00
-switch statement.	8:00
+repeat-until loops, //9:30
+for loops, // 10:00
+switch statement.	11:00
 ///////////////////////////////////////////////////
 
-start working on 11:00
-
-Variables and scops 1:30
 
 ////////////////////////////////////////////////////
 Error handling

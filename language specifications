@@ -21,3 +21,8 @@ no concating assignments k = p = i
 there is no empty scope or between kerly praces{}
 threre is no operator concatinig with number (-*+/)value like -1 *5 you hae to keep sace between them
 
+
+variables:
+ cannot define local variable with the same name of global variable defined before it;
+
+ 

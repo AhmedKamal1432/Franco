@@ -16,7 +16,6 @@ void freeNode(nodeType *p);
 int ex(nodeType *p); 
 int yylex(void); 
 void yyerror(char *s); 
-int sym[26];                    /* symbol table */ 
 %}
 
 %union { 
@@ -116,6 +115,7 @@ expr:
               | CVALUE              {$$ = con($1, CharType);}
               | VARIABLE              {
                         /* searh for the type of the variable  */
+                        // printf("yac");
                          $$ = id($1);
                         } 
               | expr '+' expr         { $$ = opr('+', dt_of_children($1, $3), 2, $1, $3); } 
@@ -222,6 +222,7 @@ DataTyprEnum dt_of_children(nodeType *p1, nodeType *p2){
 }
 
 int main(void) { 
+    sym_count = 0;
     yyparse(); 
     return 0; 
 } 
