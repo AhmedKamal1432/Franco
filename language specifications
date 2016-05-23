@@ -31,3 +31,6 @@ switch(char/int){
 after end excution the code in side practite in case
 it will junb directly to the end out of the switch 
 
+no flaot number && || compare
+5.2 && True not applicable
+

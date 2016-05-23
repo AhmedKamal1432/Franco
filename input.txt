@@ -1,14 +1,62 @@
-rkm x;
-rkm y;
-rkm k;
-rkm t;
-k = 7;
+/////////////////////////
+//   definations
+//////////////////////////////
 
-leff(k = 0; k < 8; k = k+1){
-	
-	leff(t = 0; t; t = t+1){
-		x = k*t;	
-	}
-	x = y*k;	
+rkm r;
+rkm R;
+
+kasr k;
+kasr K;
+
+bool b;
+bool B;
+
+7arf c;
+
+// just if conditions
+r = 7;
+lw(r == 7)
+	k = 5.6;
+
+lw(B){
+	b = True;
 }
 
+lw(c !=  'g')
+	b = False;
+
+lw(r < 8 && r + 3 || R ){
+	k = 5.6;
+	R = R - 1;
+}
+
+
+// if else
+lw( k < 2.0)
+	r = 8;
+aw
+	b = False;
+
+
+lw(B){
+	b = True;
+}
+aw{
+	k = 12 * 9.0;
+	B = False;
+}
+
+
+rkm k;
+
+d3bs(k){
+	lma 5:{
+		k = 7;
+	}
+	lma 3:{
+		k = 2;
+	}
+	el3ady:{
+		k = 8;
+	}
+}

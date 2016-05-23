@@ -30,7 +30,7 @@ void yyerror(char *s);
 %token  NUMBER FNUMBER CHAR BOOL CONST
 
 %token CASE DEFAULT IF THEN ELSEIF ELSE SWITCH WHILE REPEAT UNTIL FOR GOTO CONTINUE BREAK RETURN
-%token READ PRINT EXIT
+%token READ PRINT EXIT CASES
 
 ////////////////////////////////////////////////////
 
@@ -55,7 +55,7 @@ void yyerror(char *s);
 %nonassoc IFX
 %nonassoc ELSE
 %nonassoc UMINUS 
-%type <nPtr> stmt expr stmt_list assign_stmt def_stmt scop_stmt
+%type <nPtr> stmt expr stmt_list assign_stmt def_stmt scop_stmt case_stmts one_value switch_stmt default_stmt case_stmt
 %% 
 
 program: 
@@ -74,6 +74,7 @@ stmt:
               | def_stmt ';'         {$$ = $1; printf("\n");}
               | scop_stmt         {$$ = $1; printf("\n");}
 
+              | case_stmts  {$$ = $1;}
               | PRINT expr ';'          { $$ = opr(PRINT, IntType,  1, $2); printf("\n");} 
                 ; 
 
@@ -102,6 +103,7 @@ scop_stmt:
               | IF '(' expr ')' stmt %prec IFX { $$ = opr(IF, IntType, 2, $3, $5); } 
               | IF '(' expr ')' stmt ELSE stmt 
                                         { $$ = opr(IF, IntType, 3, $3, $5, $7); } 
+              | switch_stmt     {$$ = $1;}
               | '{' stmt_list '}'       { $$ = $2; } 
             ;
 
@@ -110,7 +112,26 @@ stmt_list:
                 stmt                  { $$ = $1; } 
               | stmt_list stmt        { $$ = opr(';', dt_of_children($1, $2), 2, $1, $2); } 
               ; 
-expr: 
+
+switch_stmt:
+               SWITCH '(' one_value ')'  '{' case_stmts default_stmt'}'            { $$ = opr(SWITCH, dt_of_node($3), 3, $3, $6, $7); } 
+               | SWITCH '(' one_value ')'  '{' case_stmts '}'            { $$ = opr(SWITCH, dt_of_node($3), 2, $3, $6); } 
+              ; 
+
+case_stmt:
+                CASE one_value ':' stmt                  { $$ = opr(CASE, dt_of_children($2, $4), 2, $2, $4); }
+                ;
+
+case_stmts: 
+                case_stmt                  { $$ = $1;} 
+              | case_stmts case_stmt         { $$ = opr(CASES, dt_of_children($1, $2), 2, $1, $2); } 
+              ; 
+
+default_stmt: 
+                DEFAULT  ':' stmt                  { $$ = opr(DEFAULT, dt_of_node($3), 1,  $3); } 
+            ; 
+
+one_value: 
                 VALUE               { $$ = con($1, IntType); }
               | FVALUE              {$$ = con($1, FloatType);}
               | BVALUE              {$$ = con($1, BoolType);}
@@ -119,7 +140,11 @@ expr:
                         /* searh for the type of the variable  */
                         // printf("yac");
                          $$ = id($1);
-                        } 
+                        }
+            ;
+
+expr: 
+            one_value   {$$ = $1;}
               | expr '+' expr         { $$ = opr('+', dt_of_children($1, $3), 2, $1, $3); } 
               | expr '-' expr         { $$ = opr('-', dt_of_children($1, $3), 2, $1, $3); } 
               | expr '*' expr         { $$ = opr('*',  dt_of_children($1, $3), 2, $1, $3); } 

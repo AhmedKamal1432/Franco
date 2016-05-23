@@ -46,3 +46,17 @@ aw{
 	B = False;
 }
 
+
+rkm k;
+
+d3bs(k){
+	lma 5:{
+		k = 7;
+	}
+	lma 3:{
+		k = 2;
+	}
+	el3ady:{
+		k = 8;
+	}
+}

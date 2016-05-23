@@ -4,6 +4,9 @@
 
 static int lbl;
 #define TMP "tmp"
+#define SWITCH_VAR "sw_var"
+int sw_exit_lbl;
+
 Symbole *sym;
 
 void cmp_one_top_stack();
@@ -100,6 +103,43 @@ int ex(nodeType *p) {
                 ex(p->opr.op[1]); 
                 printf("L%03d:\n", lbl1); 
             } 
+            break; 
+
+        case CASE: 
+            ex(p->opr.op[0]);
+            printf("\tpush\t%s\n",SWITCH_VAR ); 
+            printf("\tcompEQ\n"); 
+            printf("\tjz\tL%03d\n", lbl1 = lbl++); 
+            
+            ex(p->opr.op[1]); 
+            printf("\tjmp\tL%03d\n", sw_exit_lbl);
+            printf("L%03d:\n", lbl1); 
+            break; 
+
+        case CASES: 
+            ex(p->opr.op[0]);
+            ex(p->opr.op[1]);
+            break; 
+
+        case DEFAULT: 
+            ex(p->opr.op[0]);
+            break; 
+
+        case SWITCH: 
+            // printf("in switch\n");
+            ex(p->opr.op[0]);
+            // save switch var
+            printf("\tpop\t%s\n",SWITCH_VAR ); 
+            sw_exit_lbl = lbl++;
+
+            if (p->opr.nops > 2) { 
+                ex(p->opr.op[1]);
+                ex(p->opr.op[2]);
+
+            } else { 
+                ex(p->opr.op[1]);
+            } 
+            printf("L%03d:\n", sw_exit_lbl); 
             break; 
 
         case PRINT:      

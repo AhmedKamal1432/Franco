@@ -9,15 +9,14 @@ modular arthmatic
 
 2erga3 llfranco
 
+	assign constant
 ////////////////////////////////////////
-for loops, // 10:00
 switch statement.	11:00
 ///////////////////////////////////////////////////
 
 
 ////////////////////////////////////////////////////
 Error handling
-	assign constant
 Continue after first error
 
 at logial and compare operation check the dt of the child if float raise error and at the end compare change the dt of the operation to boolType
