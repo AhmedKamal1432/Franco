@@ -33,7 +33,7 @@ Symbole *get_sym(nodeType *p){
             return sym_tb[i];
         }
     }
-    sprintf(decl_err,"Variable %c used before being defined\n", p->id.i + 'a');
+    sprintf(decl_err,"Variable %c used before being defined", p->id.i + 'a');
     yyerror(decl_err);
     // compilation error for not defined
     return NULL;
@@ -45,7 +45,7 @@ bool insert_sym(nodeType *p, DataTyprEnum dt, bool constant){
         if(sym_tb[i] == DELEMETER)
         	continue;
         if(sym_tb[i]->name == p->id.i){
-		sprintf(decl_err,"Variable %c defined before\n", p->id.i + 'a');
+		sprintf(decl_err,"Variable %c defined before", p->id.i + 'a');
         yyerror(decl_err);
             // compilation erorr declared before
 		return false;
