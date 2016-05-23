@@ -149,6 +149,7 @@ expr:
               | expr '-' expr         { $$ = opr('-', dt_of_children($1, $3), 2, $1, $3); } 
               | expr '*' expr         { $$ = opr('*',  dt_of_children($1, $3), 2, $1, $3); } 
               | expr '/' expr         { $$ = opr('/',  dt_of_children($1, $3),  2, $1, $3); } 
+              | expr '%' expr         { $$ = opr('%',  dt_of_children($1, $3),  2, $1, $3); } 
               | expr '<' expr         { $$ = opr('<',  dt_of_children($1, $3), 2, $1, $3); } 
               | expr '>' expr         { $$ = opr('>',  dt_of_children($1, $3), 2, $1, $3); } 
               | expr GE expr          { $$ = opr(GE, dt_of_children($1, $3), 2, $1, $3); } 
@@ -158,12 +159,12 @@ expr:
               
               | expr AND_AND expr       {$$ = opr(AND_AND, dt_of_children($1, $3), 2, $1, $3); }
               | expr OR_OR expr       {$$ = opr(OR_OR, dt_of_children($1, $3), 2, $1, $3); }
-              | NOT expr       {$$ = opr(NOT, dt_of_node($2), 2 , $2); }
+              | NOT expr       {$$ = opr(NOT, dt_of_node($2), 1 , $2); }
 
               | expr AND expr       {$$ = opr(AND, dt_of_children($1, $3), 2, $1, $3); }
               | expr OR expr       {$$ = opr(OR, dt_of_children($1, $3), 2, $1, $3); }
               | expr XOR expr       {$$ = opr(XOR, dt_of_children($1, $3), 2, $1, $3); }
-              | L_NOT expr       {$$ = opr(L_NOT, dt_of_node($2), 2, $2); }
+              | L_NOT expr       {$$ = opr(L_NOT, dt_of_node($2), 1, $2); }
               
               | '(' expr ')'          { $$ = $2; } 
               ; 

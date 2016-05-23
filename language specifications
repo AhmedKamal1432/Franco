@@ -1,4 +1,5 @@
 variables name one char
+operator precedence like c
 int , float 4byte
 char 1 byte
 no assign at declaration

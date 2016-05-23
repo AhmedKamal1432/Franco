@@ -1,0 +1,66 @@
+/////////////////////////
+//   Need more tests
+//////////////////////////////
+
+rkm r;
+rkm R;
+
+kasr k;
+kasr K;
+
+bool b;
+bool B;
+
+7arf c;
+
+// just if conditions
+
+lw(B){
+	b = True;
+	rkm s;
+}
+
+s = 3;
+
+lw(r < 8 && r + 3 || R ){
+	k = 5.6;
+	R = R - 1;
+	s = 3;
+}
+
+
+lw(B){
+	b = True;
+	rkm s;
+	s = 9;
+}
+aw{
+	k = 12 * 9.0;
+	B = False;
+	s = 8;
+}
+
+d3bs(k){
+	lma 5:{
+		rkm n;
+		k = 7;
+		n = k * 5;
+	}
+	lma 3:{
+		k = 2;
+		n = k * 5;
+		rkm s;
+	}
+	el3ady:{
+		rkm s;
+		k = 8;
+	}
+}
+
+rkm y;
+leff(k = 0; k < 8; k = k+1){
+	rkm x;
+	x = y*k;	
+}
+
+x = 7;

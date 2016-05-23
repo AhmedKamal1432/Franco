@@ -82,7 +82,7 @@ void yyerror(char *);
 	return BVALUE;
 }
 
-[-()<>=+*/;{}] { 
+[-()<>=+*/;{}:%] { 
                 return yytext[0]; 
              } 
 
