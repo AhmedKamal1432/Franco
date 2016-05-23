@@ -1,8 +1,7 @@
+// test float
+kasr k;
+kasr K;
 
-lw(! 3.2){
-	rkm s;
-}
-
-
-
-
+k = 5.2;
+K = k * 4.0;
+K = k * 4;

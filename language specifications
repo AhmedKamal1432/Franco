@@ -1,18 +1,16 @@
 variables name one char
+operator precedence like c
 int , float 4byte
 char 1 byte
 no assign at declaration
-we don't have boolens
 
 jz jump if the zero flag raised 
 
 compare between two values in the stack  if the condition FALSE the zero flag RAISED
-
 push the result (1 or 0) on the top of the stacks
-
 and pop the two values in the stack
 
-logical operator take from stack and push result to it
+logical operator pop from stack and push result to it 
 
 push pop not change in the flags
 
@@ -25,4 +23,15 @@ threre is no operator concatinig with number (-*+/)value like -1 *5 you hae to k
 variables:
  cannot define local variable with the same name of global variable defined before it;
 
- 
+switch(char/int){
+	case value:{
+
+	}	
+}
+
+after end excution the code in side practite in case
+it will junb directly to the end out of the switch 
+
+no flaot number && || compare
+5.2 && True not applicable
+

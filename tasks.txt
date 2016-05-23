@@ -1,22 +1,12 @@
 
+modular arthmatic
 
-//3asr
-
-Variables and scops 7:30
-/////////////////////////
-test variables and scops 8:30
-
-////////////////////////////////////////
-repeat-until loops, //9:30
-for loops, // 10:00
-switch statement.	11:00
-///////////////////////////////////////////////////
+2erga3 llfranco
 
 
 ////////////////////////////////////////////////////
 Error handling
-	assign constant
 Continue after first error
 
-at logial and compare operation check the dt of the child if float raise error and at the end compare change the dt of the operation to boolType
+at logical and compare operation check the dt of the child if float raise error and at the end compare change the dt of the operation to boolType
 

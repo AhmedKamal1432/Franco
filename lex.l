@@ -23,7 +23,7 @@ void yyerror(char *);
 "el3ady"		return DEFAULT;
 
 "tool lma"		return WHILE;
-"karar"		return REPEAT;
+"krr"		return REPEAT;
 "l7d"		return UNTIL;
 "leff"		return FOR;
 "raga3"		return RETURN;
@@ -82,7 +82,7 @@ void yyerror(char *);
 	return BVALUE;
 }
 
-[-'()<>=+*/;{}] { 
+[-'()<>=+*/;{}:%] { 
                 return yytext[0]; 
              } 
 

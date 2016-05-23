@@ -4,6 +4,9 @@
 
 static int lbl;
 #define TMP "tmp"
+#define SWITCH_VAR "sw_var"
+int sw_exit_lbl;
+
 Symbole *sym;
 
 void cmp_one_top_stack();
@@ -25,13 +28,23 @@ int ex(nodeType *p) {
     case typeId:
         sym = get_sym(p);
 
-        printf("\tpush\t%c\n", p->id.i + 'a');  
+        if(sym == NULL){
+           /* Raise Compilation error */
+            break;
+        }
+        if(sym->dt = FloatType)
+            printf("\tfpush\t%c\n", p->id.i + 'a');
+        else
+            printf("\tpush\t%c\n", p->id.i + 'a');  
         break; 
 
     case typeOpr: 
 
         switch(p->opr.oper) { 
         case WHILE: 
+
+            push_scope();
+
             printf("L%03d:\n", lbl1 = lbl++); 
             ex(p->opr.op[0]); 
 
@@ -43,9 +56,57 @@ int ex(nodeType *p) {
             ex(p->opr.op[1]); 
             printf("\tjmp\tL%03d\n", lbl1); 
             printf("L%03d:\n", lbl2); 
+
+            pop_scope();
+
+            break; 
+
+        case REPEAT: 
+
+            push_scope();
+
+            printf("L%03d:\n", lbl1 = lbl++); 
+            ex(p->opr.op[0]); 
+
+            ex(p->opr.op[1]); 
+            /* compare  "top of stack != 0"  if it's value is integer*/
+            if(p->opr.op[1]->dt != BoolType)
+                cmp_one_top_stack(p->opr.op[0]);
+
+            printf("\tjnz\tL%03d\n", lbl2 = lbl++); 
+            printf("\tjmp\tL%03d\n", lbl1); 
+            printf("L%03d:\n", lbl2); 
+
+            pop_scope();
+
+            break; 
+
+        case FOR: 
+
+            
+            ex(p->opr.op[0]); 
+            printf("L%03d:\n", lbl1 = lbl++); 
+
+            ex(p->opr.op[1]); 
+            /* compare  "top of stack != 0"  if it's value is integer*/
+            if(p->opr.op[1]->dt != BoolType)
+                cmp_one_top_stack(p->opr.op[0]);
+
+            printf("\tjz\tL%03d\n", lbl2 = lbl++); 
+
+            push_scope();
+            ex(p->opr.op[3]); 
+            pop_scope();
+
+            ex(p->opr.op[2]); 
+            printf("\tjmp\tL%03d\n", lbl1); 
+            printf("L%03d:\n", lbl2); 
+
+
             break; 
 
         case IF: 
+
             ex(p->opr.op[0]);
 
             /* compare  "top of stack != 0"  if it's value is integer*/
@@ -55,17 +116,78 @@ int ex(nodeType *p) {
             if (p->opr.nops > 2) { 
                 /* if else */ 
                 printf("\tjz\tL%03d\n", lbl1 = lbl++); 
+
+                push_scope();
                 ex(p->opr.op[1]); 
+                pop_scope();
+
                 printf("\tjmp\tL%03d\n", lbl2 = lbl++); 
                 printf("L%03d:\n", lbl1); 
-                ex(p->opr.op[2]); 
+
+                push_scope();
+                ex(p->opr.op[2]);
+                pop_scope(); 
+
                 printf("L%03d:\n", lbl2); 
+
             } else { 
                 /* if */ 
                 printf("\tjz\tL%03d\n", lbl1 = lbl++); 
+
+                push_scope();
                 ex(p->opr.op[1]); 
+                pop_scope();
+
                 printf("L%03d:\n", lbl1); 
+
             } 
+            break; 
+
+        case CASE: 
+            ex(p->opr.op[0]);
+            printf("\tpush\t%s\n",SWITCH_VAR ); 
+            printf("\tcompEQ\n"); 
+            printf("\tjz\tL%03d\n", lbl1 = lbl++); 
+            
+            push_scope();
+            ex(p->opr.op[1]); 
+            pop_scope();
+
+            printf("\tjmp\tL%03d\n", sw_exit_lbl);
+            printf("L%03d:\n", lbl1); 
+            break; 
+
+        case CASES: 
+            ex(p->opr.op[0]);
+            ex(p->opr.op[1]);
+            break; 
+
+        case DEFAULT: 
+            push_scope();
+            ex(p->opr.op[0]);
+            pop_scope();
+
+            break; 
+
+        case SWITCH: 
+            // printf("in switch\n");
+            ex(p->opr.op[0]);
+            // save switch var
+            printf("\tpop\t%s\n",SWITCH_VAR ); 
+            sw_exit_lbl = lbl++;
+
+            push_scope();
+            if (p->opr.nops > 2) {
+                //with default
+                ex(p->opr.op[1]);
+                ex(p->opr.op[2]);
+
+            } else { 
+                ex(p->opr.op[1]);
+            } 
+            pop_scope();
+
+            printf("L%03d:\n", sw_exit_lbl); 
             break; 
 
         case PRINT:      
@@ -74,8 +196,18 @@ int ex(nodeType *p) {
             break; 
 
         case '=':
-            get_sym(p->opr.op[0]);
-            
+
+            sym = get_sym(p->opr.op[0]);
+            if(sym == NULL){
+                /* symbol not found*/
+                break;
+            }
+
+
+            if(sym ->constant){
+               /* Raise constant assigment error  */
+                printf("constant assigmenet error %c\n", sym->name + 'a');
+            }
 
             ex(p->opr.op[1]);
             if(p->dt == FloatType)
@@ -91,22 +223,22 @@ int ex(nodeType *p) {
             break;
 
         case NUMBER:
-            insert_sym(p->opr.op[0], IntType);
+            insert_sym(p->opr.op[0], IntType, false);
             printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
         case FNUMBER:
-            insert_sym(p->opr.op[0], FloatType);
+            insert_sym(p->opr.op[0], FloatType, false);
             printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
         case CHAR:
-            insert_sym(p->opr.op[0], CharType);
+            insert_sym(p->opr.op[0], CharType, false);
             printf("\tDB\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
         case BOOL:
-            insert_sym(p->opr.op[0], BoolType);
+            insert_sym(p->opr.op[0], BoolType, false);
             printf("\tDB\t%c\n",p->opr.op[0]->id.i + 'a'); 
             break;
 
@@ -115,25 +247,36 @@ int ex(nodeType *p) {
             switch(p->opr.op[0]->id.i){
                 case 1:
                     printf("\tDD\t%c\n",p->opr.op[1]->opr.op[0]->id.i + 'a'); 
+                    insert_sym(p->opr.op[1]->opr.op[0], IntType, false);
                     break;
                 case 2:
                     printf("\tDD\t%c\n",p->opr.op[1]->opr.op[0]->id.i + 'a'); 
+                    insert_sym(p->opr.op[1]->opr.op[0], FloatType, false);
                     break;
                 case 3:
                     printf("\tDB\t%c\n",p->opr.op[1]->opr.op[0]->id.i + 'a'); 
+                    insert_sym(p->opr.op[1]->opr.op[0], CharType, false);
                     break;
                 case 4:
                     printf("\tDB\t%c\n",p->opr.op[1]->opr.op[0]->id.i + 'a'); 
+                    insert_sym(p->opr.op[1]->opr.op[0], BoolType, false);
                     break;                
                 default:
                     /* raise error unhandled value for costat type*/
                     break;
             }
 
+
             /* Execute assignment */
             ex(p->opr.op[1]);
 
-            /* TODO: these variables should raise error att assign them (constants) */
+            sym = get_sym(p->opr.op[1]->opr.op[0]);
+            if(sym == NULL){
+                /* mosta7eel te7sal */
+                break;
+            }
+            sym->constant = true;
+            // printf("end of const\n");
             break;
 
         case NOT:
@@ -173,6 +316,7 @@ int ex(nodeType *p) {
                     case '-':   printf("\tsub\n"); break;  
                     case '*':   printf("\tmul\n"); break; 
                     case '/':   printf("\tdiv\n"); break; 
+                    case '%':   printf("\tmod\n"); break; 
 
                     case '<':
                        printf("\tcompLT\n");
@@ -233,6 +377,10 @@ int ex(nodeType *p) {
                     case '-':   printf("\tfsub\n"); break;  
                     case '*':   printf("\tfmul\n"); break; 
                     case '/':   printf("\tfdiv\n"); break; 
+
+                    case '%':  
+                         /*   raise error cannot make % with float variables  */
+                          break; 
                     case '<':
                        printf("\tfcompLT\n");
                         p->dt = BoolType;
