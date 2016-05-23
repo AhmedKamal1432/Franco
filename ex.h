@@ -27,15 +27,15 @@ int ex(nodeType *p) {
 
     case typeId:
         sym = get_sym(p);
-
         if(sym == NULL){
-           /* Raise Compilation error */
             break;
         }
-        if(sym->dt = FloatType)
+        if(sym->dt == FloatType)
             printf("\tfpush\t%c\n", p->id.i + 'a');
         else
             printf("\tpush\t%c\n", p->id.i + 'a');  
+        // printf("in type id %d %c\n", sym->dt, sym->name  + 'a');
+        p->dt = sym->dt;
         break; 
 
     case typeOpr: 
@@ -196,24 +196,122 @@ int ex(nodeType *p) {
             break; 
 
         case '=':
-
+            // printf("=\n");
             sym = get_sym(p->opr.op[0]);
             if(sym == NULL){
-                /* symbol not found*/
                 break;
             }
 
 
             if(sym ->constant){
                /* Raise constant assigment error  */
-                printf("constant assigmenet error %c\n", sym->name + 'a');
+                sprintf(decl_err,"constant assigmenet error %c", sym->name + 'a');
+                yyerror(decl_err);
+                // printf("constant assigmenet error %c", sym->name + 'a');
             }
 
             ex(p->opr.op[1]);
-            if(p->dt == FloatType)
-                printf("\tfpop\t%c\n", p->opr.op[0]->id.i + 'a'); 
-            else
-                printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a'); 
+            /*  Switch on yhe type of lfh   */
+            sym = get_sym(p->opr.op[0]);
+            // printf("%d %d\n", sym->dt, p->opr.op[1]->dt);
+            switch(sym->dt){
+                case IntType:
+                    switch(p->opr.op[1]->dt){
+                        case FloatType:
+                            sprintf(decl_err,"cannot assign float expression to int");
+                            yyerror(decl_err);
+                            break;
+
+                        case CharType:
+                            sprintf(decl_err,"Assign char to int");
+                            yywarning(decl_err);
+                            break;
+
+                        case BoolType:
+                           sprintf(decl_err,"Assign Bool to int");
+                            yywarning(decl_err);
+                             break;
+ 
+                        default:
+                                break;
+                    }
+                    printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a');
+                    break;
+
+                //////////////////////////////////////////////////////////
+                case FloatType:
+                    switch(p->opr.op[1]->dt){
+                        case IntType:
+                            sprintf(decl_err,"Assign int to float");
+                            yywarning(decl_err);
+                            break;
+
+                        case CharType:
+                            sprintf(decl_err,"Assign char to float");
+                            yywarning(decl_err);
+                            break;
+
+                        case BoolType:
+                           sprintf(decl_err,"Assign Bool to float");
+                            yywarning(decl_err);
+                             break;
+ 
+                        default:
+                            break;
+                    }
+                    printf("\tfpop\t%c\n", p->opr.op[0]->id.i + 'a');
+                    break;
+
+                ////////////////////////////////////////////////////////////
+                case CharType:
+                    switch(p->opr.op[1]->dt){
+                        case IntType:
+                            sprintf(decl_err,"Cannot Assign int expression to Char");
+                            yyerror(decl_err);
+                            break;
+
+                        case FloatType:
+                            sprintf(decl_err,"Cannot Assign Float expression to char");
+                            yyerror(decl_err);
+                            break;
+
+                        case BoolType:
+                           sprintf(decl_err,"Assign Bool to char");
+                            yywarning(decl_err);
+                             break;
+ 
+                        default:
+                            break;
+                    }
+                    printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a');
+                    break;
+
+                //////////////////////////////////////////////////////////
+                case BoolType:
+                    switch(p->opr.op[1]->dt){
+                        case IntType:
+                            sprintf(decl_err,"Cannot Assign int expression to bool");
+                            yyerror(decl_err);
+                            break;
+
+                        case FloatType:
+                            sprintf(decl_err,"Cannot Assign float expression to bool");
+                            yyerror(decl_err);
+                            break;
+
+                        case CharType:
+                           sprintf(decl_err,"Assign char to bool");
+                            yywarning(decl_err);
+                             break;
+ 
+                        default:
+                            break;
+                    }
+                    printf("\tpop\t%c\n", p->opr.op[0]->id.i + 'a');
+                    break;
+            }
+    
+            p->dt = dt_of_node(p->opr.op[0]);
             break; 
 
         /* Ignored Not implemented */
@@ -224,22 +322,26 @@ int ex(nodeType *p) {
 
         case NUMBER:
             insert_sym(p->opr.op[0], IntType, false);
-            printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a'); 
+            printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a');
+            p->dt = IntType;
             break;
 
         case FNUMBER:
             insert_sym(p->opr.op[0], FloatType, false);
             printf("\tDD\t%c\n",p->opr.op[0]->id.i + 'a'); 
+            p->dt = FloatType;
             break;
 
         case CHAR:
             insert_sym(p->opr.op[0], CharType, false);
             printf("\tDB\t%c\n",p->opr.op[0]->id.i + 'a'); 
+            p->dt = CharType;
             break;
 
         case BOOL:
             insert_sym(p->opr.op[0], BoolType, false);
             printf("\tDB\t%c\n",p->opr.op[0]->id.i + 'a'); 
+            p->dt = BoolType;
             break;
 
         case CONST:
@@ -266,6 +368,7 @@ int ex(nodeType *p) {
                     break;
             }
 
+            p->dt = dt_of_node(p->opr.op[0]);
 
             /* Execute assignment */
             ex(p->opr.op[1]);
@@ -284,12 +387,13 @@ int ex(nodeType *p) {
             ex(p->opr.op[0]);
                 switch(p->dt){
                     case FloatType:
-                        /* raise error */
-                        yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"Not operation not permitted for float type" );
+                        yyerror(decl_err);
                         break;
                     default:
                         break; 
                 }
+                p->dt = dt_of_node(p->opr.op[0]);
                 break;
 
         case L_NOT:
@@ -297,13 +401,14 @@ int ex(nodeType *p) {
             ex(p->opr.op[0]);
                 switch(p->dt){
                     case FloatType:
-                        /* raise error */
-                        yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"Not operation not permitted for float type");
+                        yyerror(decl_err);
                         break;
                     default:
                         printf("\tNot\n"); break;                         
                         break; 
                 }
+                p->dt = dt_of_node(p->opr.op[0]);
                 break;
 
         default: 
@@ -379,7 +484,8 @@ int ex(nodeType *p) {
                     case '/':   printf("\tfdiv\n"); break; 
 
                     case '%':  
-                         /*   raise error cannot make % with float variables  */
+                        sprintf(decl_err,"Mod operation not permitted for float type" );
+                        yyerror(decl_err);
                           break; 
                     case '<':
                        printf("\tfcompLT\n");
@@ -409,30 +515,38 @@ int ex(nodeType *p) {
 
                     /* TODO: Raise errors here*/
                     case AND_AND: 
-                    yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"And operation not permitted for float type" );
+                        yyerror(decl_err);
                         break;
 
                     case OR_OR: 
-                    yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"Or operation not permitted for float type" );
+                        yyerror(decl_err);
                         break;
 
                     case AND: 
-                    yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"Logical And operation not permitted for float type" );
+                        yyerror(decl_err);
                         break;
 
                     case OR: 
-                    yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"Logical Or operation not permitted for float type" );
+                        yyerror(decl_err);
                         break;
 
                     case XOR: 
-                    yyerror("Can't execute logical operation on float type");
+                        sprintf(decl_err,"Logical Xor operation not permitted for float type" );
+                        yyerror(decl_err);
                         break;
                     } 
-                    default:    
-                        break;
+                    break;
+                default:   
+                    /* error */
+                    break;
             }
-        } 
-    } 
+            p->dt = dt_of_children(p->opr.op[0], p->opr.op[1]);
+        }
+    }
     return 0; 
 } 
 

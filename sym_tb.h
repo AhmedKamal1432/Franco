@@ -8,6 +8,8 @@
 
 char decl_err[40];
 void yyerror(char *s); 
+void yywarning(char *s); 
+
 
 /* variables of our program */
 typedef struct {
@@ -29,7 +31,7 @@ Symbole *get_sym(nodeType *p){
         // printf("%d\n",i );
         if(sym_tb[i]->name == p->id.i){
             // found
-		// printf("found  %d\n", i);
+	// printf("found  %c type = %d\n", sym_tb[i]->name+ 'a',sym_tb[i]->dt );
             return sym_tb[i];
         }
     }
@@ -86,3 +88,18 @@ bool pop_scope(){
 	// printf("pop_scope sym_count = %d\n",sym_count);
 }
 
+
+DataTyprEnum dt_of_node(nodeType *p){
+    if(p == NULL)
+        return IntType;
+    return p->dt;
+}
+
+DataTyprEnum dt_of_children(nodeType *p1, nodeType *p2){
+    if(p1 == NULL || p2 == NULL)
+        return IntType;
+
+    if(dt_of_node(p1) == FloatType || dt_of_node(p2) == FloatType)
+        return FloatType;
+    return IntType;
+}

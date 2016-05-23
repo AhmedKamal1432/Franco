@@ -17,8 +17,10 @@ int ex(nodeType *p);
 int yylex(void); 
 int yylineno;
 int yyerrorno;
+int yywarn_no;
 
 FILE* output;
+FILE* warn_file;
 %}
 
 %union { 
@@ -241,30 +243,29 @@ void freeNode(nodeType *p) {
 
 
 
-DataTyprEnum dt_of_node(nodeType *p){
-    return p->dt;
-}
-
-DataTyprEnum dt_of_children(nodeType *p1, nodeType *p2){
-    if(dt_of_node(p1) == FloatType || dt_of_node(p2) == FloatType)
-        return FloatType;
-    return IntType;
-}
-
 int main(void) { 
     
     output = fopen ("errors.txt","w");
-    sym_count = 0;
+    warn_file = fopen ("warning.txt","w");
+    sym_count = yyerrorno = yywarn_no = 0;
     int status = yyparse(); 
     fclose(output);
+    fclose(warn_file);
     if (status)
       return status;
     if (yynerrs)
       return 3;
     return 0; 
 } 
+
 void yyerror(char *s) { 
     yyerrorno++;
     fprintf(output, "error #%d - line #%d: %s\n",yyerrorno, yylineno, s);
-    fprintf(stderr, "error #%d - line #%d: %s\n",yyerrorno, yylineno, s);
+    // fprintf(stderr, "error #%d - line #%d: %s\n",yyerrorno, yylineno, s);
+} 
+
+void yywarning(char *s) { 
+    yywarn_no++;
+    fprintf(warn_file, "Warning #%d - line #%d: %s\n",yywarn_no, yylineno, s);
+    // fprintf(stderr, "Warning #%d - line #%d: %s\n",yywarn_no, yylineno, s);
 } 

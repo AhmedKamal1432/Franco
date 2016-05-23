@@ -3,6 +3,7 @@
 #include "def.h" 
 #include "y.tab.h" 
 void yyerror(char *); 
+void yywarning(char *); 
 %} 
 
 %% 

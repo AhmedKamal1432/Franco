@@ -23,9 +23,9 @@ k = 2 * 2.5;
 k = 'q';
 k = True;
 
-c = r;
-c = k;
-c = b;
+c = r
+c = k
+c = b
 
 
 c = 'q';
@@ -34,9 +34,9 @@ c = 2;
 c = 2 * 2.5;
 c = True;
 
-b  = r;
-b  = k;
-b  = c;
+b  = r
+b  = k
+b  = c
 
 b = True;
 b = 'q';
