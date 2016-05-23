@@ -6,3 +6,6 @@ y.tab.h
 input.txt
 test/input_rm_cm.txt
 temp
+warning.txt
+errors.txt
+

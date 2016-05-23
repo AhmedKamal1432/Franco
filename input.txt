@@ -1,7 +1,0 @@
-// test float
-kasr k;
-kasr K;
-
-k = 5.2;
-K = k * 4.0;
-K = k * 4;
