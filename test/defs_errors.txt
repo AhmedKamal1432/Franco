@@ -1,0 +1,14 @@
+rkam r;
+kasr ka;
+7arf c
+b b;
+
+sabt rkm R = 2;
+sabt kasr K = 22;
+sabt 7arf C = q';
+sabt bool B = true;
+
+s = 7;
+k = 5..6;
+c = 't''y';
+b = False;

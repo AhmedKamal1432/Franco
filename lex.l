@@ -82,12 +82,13 @@ void yyerror(char *);
 	return BVALUE;
 }
 
-[-()<>=+*/;{}] { 
+[-'()<>=+*/;{}] { 
                 return yytext[0]; 
              } 
 
-[ \t\n]+        ;       /* ignore whitespace */ 
-.               yyerror("Unknown character"); 
+[ \t]+        ;       /* ignore whitespace */ 
+[\n]		yylineno++;
+.           yyerror("Unknown character"); 
 %% 
 int yywrap(void) { 
     return 1; 

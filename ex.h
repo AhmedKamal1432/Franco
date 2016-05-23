@@ -24,9 +24,7 @@ int ex(nodeType *p) {
 
     case typeId:
         sym = get_sym(p);
-        if(sym == NULL){
-           /* Raise Compilation error */
-        }
+
         printf("\tpush\t%c\n", p->id.i + 'a');  
         break; 
 
@@ -77,9 +75,7 @@ int ex(nodeType *p) {
 
         case '=':
             get_sym(p->opr.op[0]);
-            if(sym == NULL){
-               /* Raise Compilation error */
-            }
+            
 
             ex(p->opr.op[1]);
             if(p->dt == FloatType)
@@ -146,6 +142,7 @@ int ex(nodeType *p) {
                 switch(p->dt){
                     case FloatType:
                         /* raise error */
+                        yyerror("Can't execute logical operation on float type");
                         break;
                     default:
                         break; 
@@ -158,6 +155,7 @@ int ex(nodeType *p) {
                 switch(p->dt){
                     case FloatType:
                         /* raise error */
+                        yyerror("Can't execute logical operation on float type");
                         break;
                     default:
                         printf("\tNot\n"); break;                         
@@ -263,24 +261,27 @@ int ex(nodeType *p) {
 
                     /* TODO: Raise errors here*/
                     case AND_AND: 
+                    yyerror("Can't execute logical operation on float type");
                         break;
 
                     case OR_OR: 
+                    yyerror("Can't execute logical operation on float type");
                         break;
 
                     case AND: 
+                    yyerror("Can't execute logical operation on float type");
                         break;
 
                     case OR: 
+                    yyerror("Can't execute logical operation on float type");
                         break;
 
                     case XOR: 
+                    yyerror("Can't execute logical operation on float type");
                         break;
                     } 
-                    break;
-                default:   
-                    /* error */
-                    break;
+                    default:    
+                        break;
             }
         } 
     } 

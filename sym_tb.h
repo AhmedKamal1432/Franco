@@ -6,6 +6,9 @@
 #define DELEMETER 0
 #define MAX_SYM_COUNT 100
 
+char decl_err[40];
+void yyerror(char *s); 
+
 /* variables of our program */
 typedef struct {
     char name;
@@ -27,7 +30,8 @@ Symbole *get_sym(nodeType *p){
             return sym_tb[i];
         }
     }
-    printf("\terror: Variable %c not declared before\n", p->id.i + 'a');
+    sprintf(decl_err,"Variable %c used before being defined\n", p->id.i + 'a');
+    yyerror(decl_err);
     // compilation error for not defined
     return NULL;
 }
@@ -36,7 +40,8 @@ bool insert_sym(nodeType *p, DataTyprEnum dt){
     int i = sym_count - 1;
     for(;i >= 0; i--){
         if(sym_tb[i]->name == p->id.i){
-		printf("\terror: Variable %c definded before\n", sym_tb[i]->name + 'a');
+		sprintf(decl_err,"Variable %c defined before\n", p->id.i + 'a');
+        yyerror(decl_err);
             // compilation erorr declared before
 		return false;
         }

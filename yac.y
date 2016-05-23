@@ -15,7 +15,10 @@ DataTyprEnum dt_of_node(nodeType *p);
 void freeNode(nodeType *p); 
 int ex(nodeType *p); 
 int yylex(void); 
-void yyerror(char *s); 
+int yylineno;
+int yyerrorno;
+
+FILE* output;
 %}
 
 %union { 
@@ -64,6 +67,7 @@ program:
 
 code: 
         code stmt         { ex($2); freeNode($2); } 
+        | code error ';'  {yyerrok;}
         | /* NULL */ 
   ; 
 
@@ -131,12 +135,12 @@ expr:
               
               | expr AND_AND expr       {$$ = opr(AND_AND, dt_of_children($1, $3), 2, $1, $3); }
               | expr OR_OR expr       {$$ = opr(OR_OR, dt_of_children($1, $3), 2, $1, $3); }
-              | NOT expr       {$$ = opr(NOT, dt_of_node($2), 2 , $2); }
+              | NOT expr       {$$ = opr(NOT, dt_of_node($2), 1 , $2); }
 
               | expr AND expr       {$$ = opr(AND, dt_of_children($1, $3), 2, $1, $3); }
               | expr OR expr       {$$ = opr(OR, dt_of_children($1, $3), 2, $1, $3); }
               | expr XOR expr       {$$ = opr(XOR, dt_of_children($1, $3), 2, $1, $3); }
-              | L_NOT expr       {$$ = opr(L_NOT, dt_of_node($2), 2, $2); }
+              | L_NOT expr       {$$ = opr(L_NOT, dt_of_node($2), 1, $2); }
               
               | '(' expr ')'          { $$ = $2; } 
               ; 
@@ -207,9 +211,7 @@ void freeNode(nodeType *p) {
     free (p); 
 } 
 
-void yyerror(char *s) { 
-    fprintf(stdout, "%s\n", s); 
-} 
+
 
 DataTyprEnum dt_of_node(nodeType *p){
     return p->dt;
@@ -222,7 +224,19 @@ DataTyprEnum dt_of_children(nodeType *p1, nodeType *p2){
 }
 
 int main(void) { 
+    
+    output = fopen ("errors.txt","w");
     sym_count = 0;
-    yyparse(); 
+    int status = yyparse(); 
+    fclose(output);
+    if (status)
+      return status;
+    if (yynerrs)
+      return 3;
     return 0; 
+} 
+void yyerror(char *s) { 
+    yyerrorno++;
+    fprintf(output, "error #%d - line #%d: %s\n",yyerrorno, yylineno, s);
+    fprintf(stderr, "error #%d - line #%d: %s\n",yyerrorno, yylineno, s);
 } 

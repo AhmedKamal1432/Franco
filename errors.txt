@@ -1,0 +1,1 @@
+error #1 - line #9: Can't execute logical operation on float type
