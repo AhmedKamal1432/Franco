@@ -24,7 +24,7 @@ tool lma(y < 20){
 }
 
 
-karar{
+krr{
 	z = 0;	
 }l7d(c == 0);
 
